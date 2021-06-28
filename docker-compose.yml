@@ -1,0 +1,36 @@
+version: '3'
+
+networks:
+  graphql-demo-r1-net:
+    driver: bridge
+    name: graphql-demo-r1-net
+
+services:
+  graphql-r1-postgres-12:
+    container_name: graphql-r1-postgres-12
+    image: postgres:12
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${DB3_PASSWORD}
+      POSTGRES_USER: ${DB3_USERNAME}
+      POSTGRES_DB: ${DB3_NAME}
+    networks:
+      - graphql-demo-r1-net
+
+  graphql-r1-app:
+    container_name: graphql-r1-app
+    image: docker.haulmont.com/platform/infrastructure/demo-cuba-apps-docker/demo-r1/graphql-demo-r1:testing
+    restart: unless-stopped
+    environment:
+      RDS_HOSTNAME: graphql-r1-postgres-12
+      RDS_PASSWORD: ${DB3_PASSWORD}
+      RDS_USERNAME: ${DB3_USERNAME}
+      RDS_DB_NAME: ${DB3_NAME}
+      RDS_PORT: 5432
+      JMIX_ADMIN: ${JMIX_ADMIN}
+      JMIX_PASSWORD: ${JMIX_PASSWORD}
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - 8084:8080
+    networks:
+      - graphql-demo-r1-net
