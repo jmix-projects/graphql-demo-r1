@@ -33,7 +33,9 @@ dependencies {
     implementation 'io.jmix.localfs:jmix-localfs-starter'
 
     implementation 'io.jmix.graphql:jmix-graphql-starter'
-    runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:8.1.1'
+    runtimeOnly ('com.graphql-java-kickstart:graphiql-spring-boot-starter:8.1.1') {
+        exclude group: 'javax.websocket', module: 'javax.websocket-api'
+    }
     implementation "io.jmix.security:jmix-security-oauth2-starter"
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
